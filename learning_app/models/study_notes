@@ -1,0 +1,61 @@
+🧠 Why we usually do module.model instead of just model
+
+Namespace / Uniqueness
+
+Odoo can have many modules installed.
+
+Multiple modules could define a teacher model.
+
+Using teacher.teacher or school.teacher avoids name conflicts.
+
+Example:
+
+module1 -> teacher.teacher
+module2 -> teacher.teacher  # Conflict if both were just 'teacher'
+
+
+Module clarity
+
+The prefix (teacher or school) tells you which module the model belongs to.
+
+Makes it easier when reading code or XML.
+
+Odoo convention
+
+Almost all Odoo models follow module_name.model_name.
+
+Standard modules use it too, e.g., res.partner, sale.order, hr.employee
+
+====================================================++++++=====================
+🧠 Two ways to define abstract models in Odoo
+1️⃣ Using models.AbstractModel (recommended)
+from odoo import models, fields
+
+class PersonBase(models.AbstractModel):
+    _name = 'person.base'
+    name = fields.Char()
+
+✅ Pros:
+
+Explicitly abstract — Odoo knows it will never create a table.
+
+Cleaner and more readable; other developers immediately know it’s abstract.
+
+Can define common methods, reusable in multiple classic models.
+
+2️⃣ Using models.Model + _abstract = True
+class PersonBase(models.Model):
+    _name = 'person.base'
+    _abstract = True
+    name = fields.Char()
+
+✅ Pros:
+Still works
+
+Sometimes used in older Odoo code or examples
+
+❌ Cons:
+
+Less explicit
+
+_abstract = True must be remembered, otherwise a table will be created

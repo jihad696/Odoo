@@ -1,0 +1,20 @@
+<odoo>
+    <menuitem id="school_management_root_menu"
+              name="School management"
+                web_icon="learning_app,static/description/icon.png"/>
+
+
+
+    <menuitem id="course_menu"
+              name="Courses"
+              parent="school_management_root_menu"/>
+
+    <menuitem id="configurations_menu"
+              name="configurations"
+              parent="school_management_root_menu"/>
+
+<!--    <menuitem id="enrollment_menu"-->
+<!--          name="Enrollments"-->
+<!--          parent="school_management_root_menu"/>-->
+
+</odoo>

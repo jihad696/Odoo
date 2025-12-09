@@ -1,0 +1,20 @@
+
+########### id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink #####
+This line is the header that tells Odoo what each column in the CSV means:
+
+id → unique ID for this access rule
+
+name → name of the rule
+
+model_id:id → which model the rule applies to
+
+group_id:id → which user group gets this permission
+
+perm_read → allow reading (1 or 0)
+
+perm_write → allow editing (1 or 0)
+
+perm_create → allow creating (1 or 0)
+
+perm_unlink → allow deleting (1 or 0)
+and for naming of model_property you MUST name model_modelName  --->  _name=""
