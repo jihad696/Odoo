@@ -59,3 +59,8 @@ Sometimes used in older Odoo code or examples
 Less explicit
 
 _abstract = True must be remembered, otherwise a table will be created
+
+=============================================================================
+@api.depends can track related fields and recompute values even if the change happens on a related model.
+
+@onchange is form-view only and does not work for automatic recomputation or related fields outside the current model.

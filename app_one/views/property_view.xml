@@ -7,7 +7,6 @@
                     <field name="name"/>
                     <field name="tag_ids" widget="many2many_tags"/>
                     <field name="state"/>
-
                     <field name="owner_id"/>
                     <field name="date_availability"/>
                     <field name="state"/>
@@ -49,7 +48,9 @@
                              <group string="Genearal Info.">
 
                                 <field name="date_availability"/>
+                                <field name="expected_price"/>
                                 <field name="selling_price"/>
+                                <field name="diff"/>
                                 <field name="garden"/>
                                  <field name="owner_id"/>
                                  <field name="tag_ids" widget="many2many_tags"/>
