@@ -16,5 +16,6 @@
         'security/ir.model.access.csv',
 
     ],
+
     'application': True,
 }

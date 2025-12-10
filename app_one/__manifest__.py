@@ -16,6 +16,9 @@
         'security/ir.model.access.csv',
 
     ],
+    'assets': {
+        'web.assets_backend': ['app_one/static/src/property.css']
+    },
     'application': True,
 }
 #

@@ -3,7 +3,7 @@
         <field name="name">property tree</field>
         <field name="model">property</field>
         <field name="arch" type="xml">
-                <list multi_edit="1" edit="1" create="1" delete="0">
+                <list multi_edit="1" edit="1" create="1" delete="0" class="header_custom">
                     <field name="name"/>
                     <field name="tag_ids" widget="many2many_tags"/>
                     <field name="state"/>

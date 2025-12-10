@@ -57,14 +57,15 @@ class Property(models.Model):
     @api.depends('expected_price','selling_price','owner_id.phone_number')
     def _compute_diff(self):
         for rec in self:
+            print(rec)
             print('inside compute_diff method')
             rec.diff = rec.expected_price - rec.selling_price
 
-    @api.onchange('expected_price')  #the field name MUST BE in current model (simple field)  and view only not in (relsted field)related model (owner_id.phone_number) won't work
+    @api.onchange('expected_price','owner_id.phone_number')  #the field name MUST BE in current model (simple field)  and view only not in (relsted field)related model (owner_id.phone_number) won't work
     def _onchange_expected_price(self):
         for rec in self:
-            print('inside on chnage expected price')
-            return  rec
+            print(rec)
+            print('inside _onchange_expected_price')
 
 
 
