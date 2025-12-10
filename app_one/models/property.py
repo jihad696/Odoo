@@ -30,8 +30,8 @@ class Property(models.Model):
     tag_ids = fields.Many2many('tag')
     state = fields.Selection([
         ('draft','Draft'),
+        ('pending', 'Pending'),
         ('sold','Sold'),
-        ('pending','Pending'),
     ],default='draft')
 
     _sql_constraints = [
@@ -51,6 +51,35 @@ class Property(models.Model):
         for rec in self:         # without for it is called record set return more than one record
             if rec.bed_rooms == 0:
                      raise ValidationError('please add valid number to beadrooms')
+
+
+
+    def action_draft(self):
+        for rec in self:
+            print("inside draft action")
+            rec.state = 'draft'
+            # rec.write ({
+            #
+            # })
+
+
+    def action_pending(self):
+        for rec in self:
+            print("inside pending action")
+            rec.state = 'pending'
+            # rec.write ({
+            #
+            # })
+
+
+    def action_sold(self):
+        for rec in self:
+            print("inside sold action")
+            rec.state = 'sold'
+            # rec.write ({
+            #
+            # })
+
 
     #
     #
