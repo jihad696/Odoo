@@ -14,6 +14,12 @@ class Course(models.Model):
     student_ids = fields.Many2many('student')
     student_count = fields.Integer(compute='_compute_student_count')
     teacher_id = fields.Many2one('school.teacher')
+    state = fields.Selection([
+        ('draft','Draft'),
+        ('pending ','Pending'),
+        ('Confirmed','Confirmed')
+
+    ])
 
 
 
@@ -22,6 +28,12 @@ class Course(models.Model):
     def _compute_student_count(self):
         for record in self:
             record.student_count = len(record.student_ids)
+
+
+
+    def action_draft(self):
+        for rec in self:
+            rec.state = 'draft'
 
 
 

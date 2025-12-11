@@ -1,5 +1,3 @@
-from email.policy import default
-
 from odoo import models,fields,api
 from odoo.exceptions import ValidationError
 
@@ -64,10 +62,8 @@ class Property(models.Model):
     @api.onchange('expected_price','owner_id.phone_number')  #the field name MUST BE in current model (simple field)  and view only not in (relsted field)related model (owner_id.phone_number) won't work
     def _onchange_expected_price(self):
         for rec in self:
-            print(rec)
+            # print(rec)
             print('inside _onchange_expected_price')
-
-
 
 
     def action_draft(self):
@@ -77,7 +73,6 @@ class Property(models.Model):
             # rec.write ({
             #
             # })
-
 
     def action_pending(self):
         for rec in self:
