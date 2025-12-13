@@ -1,6 +1,5 @@
 from odoo import models
 from odoo import fields,api
-from odoo.fields import Many2one
 from odoo.tools import Query
 
 
@@ -13,14 +12,32 @@ class Course(models.Model):
     description = fields.Char()
     student_ids = fields.Many2many('student')
     student_count = fields.Integer(compute='_compute_student_count')
+
     teacher_id = fields.Many2one('school.teacher')
     state = fields.Selection([
         ('draft','Draft'),
-        ('pending ','Pending'),
-        ('Confirmed','Confirmed')
+        ('pending','Pending'),
+        ('confirm','Confirmed'),
 
     ])
 
+    expected_price = fields.Float(digits=(0,2))
+    real_price = fields.Float(digits=(0,2))
+    diff  = fields.Float(compute='_price_')
+
+
+
+    @api.depends('diff')
+    def _price_(self):
+        for rec in self:
+            rec.diff = rec.expected_price - rec.real_price
+
+
+
+    @api.onchange('diff')
+    def _price_(self):
+        for rec in self:
+            rec.diff = rec.expected_price - rec.real_price
 
 
 
@@ -34,6 +51,18 @@ class Course(models.Model):
     def action_draft(self):
         for rec in self:
             rec.state = 'draft'
+
+
+
+    def action_pending(self):
+        for rec in self:
+            rec.state = 'pending'
+
+
+
+    def action_confirm(self):
+        for rec in self:
+            rec.state = 'confirm'
 
 
 

@@ -1,8 +1,5 @@
 <odoo>
 
-
-
-
     <record id="student_view_tree" model="ir.ui.view">
         <field name="name">student tree</field>
         <field name="model">student</field>
@@ -11,10 +8,12 @@
                 <field name="name"/>
                 <field name="grade"/>
                 <field name="age"/>
-
             </list>
         </field>
     </record>
+
+
+
 
 <record id="student_view_form" model="ir.ui.view">
     <field name="name">student form</field>
@@ -35,6 +34,7 @@
                         <field name="name"/>
                         <field name="age"/>
                         <field name="phone_number" required="1"/>
+
                     </group>
                     <group string="Left Column">
                         <field name="grade"/>
@@ -57,12 +57,11 @@
                     <field name="name"/>
                     <field name="grade"/>
 
-
 <!--                    <filter name="with_garden" string="With Garden" domain="[('garden','=',True)]"/>-->
 <!--                    <filter name="without_garden" string="Without Garden" domain="[('garden','=',False)]"/>-->
 <!--                    <filter name="with_garage" string="With Garage" domain="[('garage','=',True)]"/>-->
-
 <!--                    <filter name="group_by_garden" string="Garden" context="{'group_by':'garden'}"/>-->
+
                 </search>
 
 

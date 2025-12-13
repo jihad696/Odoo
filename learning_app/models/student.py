@@ -1,16 +1,18 @@
 from odoo import models,fields,api
 from odoo.exceptions import ValidationError
-from odoo.tools import unique
 
 
 class Student(models.Model):
     _name = 'student'
+
     # _inherit = 'base.user'
+
     name = fields.Char()
     age =fields.Integer()
     hobby= fields.Char()
     phone_number = fields.Char()
     grade = fields.Selection(
+
         [
             ('grade_one','1'),
             ('grade_two','2'),
@@ -19,11 +21,15 @@ class Student(models.Model):
     )
 
     course_ids = fields.Many2many('course')
+    course_code = fields.Char()
 
 
     _sql_constraints = [
         ('unique_phone', 'UNIQUE(phone_number)', 'Phone number already exists!')
     ]
+
+
+
 
 
 
@@ -38,13 +44,3 @@ class Student(models.Model):
                 raise ValidationError("Age cannot be zero!")
             if rec.age > 18:
                 raise ValidationError("Age cannot be greater than 18!")
-
-
-
-
-
-
-
-
-
-

@@ -1,14 +1,17 @@
 from odoo import models,fields,api
+from odoo.api import readonly
 from odoo.exceptions import ValidationError
 
 class Property(models.Model):
 
     _name = 'property'
+    _description = 'Property Record'
+    _inherit = ['mail.thread','mail.activity.mixin']
 
     name = fields.Char(default="New", size=14)
-    description = fields.Text()
+    description = fields.Text(tracking=True)
     postcode = fields.Char(required=True)
-    date_availability = fields.Date()
+    date_availability = fields.Date(tracking=True)
     expected_price = fields.Float(digits=(0,2))
     selling_price = fields.Float()
     diff = fields.Float(compute='_compute_diff',store=True)
@@ -26,7 +29,14 @@ class Property(models.Model):
     ])
 
     owner_id = fields.Many2one('owner')
+
+    owner_address = fields.Char(related='owner_id.address',readonly = False)
+    owner_phone = fields.Char(related='owner_id.phone_number',store=True)
     tag_ids = fields.Many2many('tag')
+
+    line_ids = fields.One2many('property.line','property_id')
+
+
     state = fields.Selection([
         ('draft','Draft'),
         ('pending', 'Pending'),
@@ -59,7 +69,8 @@ class Property(models.Model):
             print('inside compute_diff method')
             rec.diff = rec.expected_price - rec.selling_price
 
-    @api.onchange('expected_price','owner_id.phone_number')  #the field name MUST BE in current model (simple field)  and view only not in (relsted field)related model (owner_id.phone_number) won't work
+    @api.onchange('expected_price','owner_id.phone_number')
+    #the field name MUST BE in current model (simple field)  and view only not in (relsted field)related model (owner_id.phone_number) won't work
     def _onchange_expected_price(self):
         for rec in self:
             # print(rec)
@@ -124,3 +135,11 @@ class Property(models.Model):
     #     res = super(Property, self).unlink()  # call the real unlink
     #     print("After unlink")
     #     return res
+
+
+class PropertyLines(models.Model):
+
+    _name = 'property.line'
+    area = fields.Float()
+    description = fields.Char()
+    property_id = fields.Many2one('property')
