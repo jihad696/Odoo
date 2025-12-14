@@ -3,3 +3,4 @@ access_property_user,property.user,model_property,base.group_user,1,1,1,1
 access_owner_user,owner.user,model_owner,base.group_user,1,1,1,1
 access_tag_user,tag.user,model_tag,base.group_user,1,1,1,1
 access_line_user,line.user,model_property_line,base.group_user,1,1,1,1
+access_building_user,building.user,model_building,base.group_user,1,1,1,1

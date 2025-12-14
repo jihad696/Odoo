@@ -8,14 +8,16 @@
     ],
     'data': [
         # add your XML files here later (paths)
-
+        'security/ir.model.access.csv',
         'views/base_menu.xml',
         'views/property_view.xml',
         'views/owner_view.xml',
         'views/tags_view.xml',
         'views/sale_order_view.xml',
         'views/res_partner.xml',
-        'security/ir.model.access.csv',
+        'views/building_view.xml',
+        'reports/property_report.xml',
+
 
     ],
     'assets': {

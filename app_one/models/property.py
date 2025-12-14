@@ -12,11 +12,14 @@ class Property(models.Model):
     description = fields.Text(tracking=True)
     postcode = fields.Char(required=True)
     date_availability = fields.Date(tracking=True)
+    expected_selling_date = fields.Date(tracking=True)
+    is_late = fields.Boolean()
     expected_price = fields.Float(digits=(0,2))
     selling_price = fields.Float()
     diff = fields.Float(compute='_compute_diff',store=True)
     bed_rooms = fields.Integer()
     facades = fields.Integer()
+
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
@@ -33,6 +36,7 @@ class Property(models.Model):
     owner_address = fields.Char(related='owner_id.address',readonly = False)
     owner_phone = fields.Char(related='owner_id.phone_number',store=True)
     tag_ids = fields.Many2many('tag')
+    active=fields.Boolean(default=True)
 
     line_ids = fields.One2many('property.line','property_id')
 
@@ -41,6 +45,7 @@ class Property(models.Model):
         ('draft','Draft'),
         ('pending', 'Pending'),
         ('sold','Sold'),
+        ('closed','Close'),  #1 in 42 server action
     ],default='draft')
 
     _sql_constraints = [
@@ -98,9 +103,21 @@ class Property(models.Model):
         for rec in self:
             print("inside sold action")
             rec.state = 'sold'
-            # rec.write ({
-            #
-            # })
+
+
+    def action_closed(self):
+        for rec in self:
+            print("inside closed action")
+            rec.state = 'closed'
+
+
+    def check_expected_selling_date(self):
+        property_ids = self.search([])
+        for rec in property_ids:
+            if rec.expected_selling_date and rec.expected_selling_date < fields.date.today():
+                rec.is_late = True
+
+
 
 
     #

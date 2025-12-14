@@ -3,10 +3,11 @@
         <field name="name">property tree</field>
         <field name="model">property</field>
         <field name="arch" type="xml">
-            <list multi_edit="1" edit="1" create="1" delete="0" class="header_custom">
+            <list multi_edit="1" edit="1" create="1" delete="0" class="header_custom" decoration-danger="(is_late)">
                 <field name="name"/>
                 <field name="tag_ids" widget="many2many_tags"/>
                 <field name="state"/>
+                <field name="is_late" invisible="1"/>
                 <field name="owner_id"/>
                 <field name="date_availability"/>
                 <field name="state"/>
@@ -14,6 +15,7 @@
                 <field name="garden"/>
                 <field name="facades"/>
                 <field name="postcode"/>
+                <field name="active"/>
                 <field name="garden_oreintation"/>
                 <field name="garden_area" optional="1"/>
                 <field name="garage" optional="1"/>
@@ -50,6 +52,7 @@
                             <field name="date_availability"/>
                             <field name="expected_price"/>
                             <field name="selling_price"/>
+                            <field name="is_late" invisible="1"/>
                             <field name="diff"/>
                             <field name="garden"/>
                             <field name="owner_id"/>
@@ -57,6 +60,7 @@
                             <field name="owner_phone"/>
                             <field name="tag_ids" widget="many2many_tags"/>
                             <field name="bed_rooms"/>
+                            <field name="active"/>
                         </group>
 
                         <group string="Additional Info.">
@@ -100,8 +104,9 @@
         <field name="model">property</field>
         <field name="arch" type="xml">
             <search>
-                <field name="name"/>
                 <field name="postcode"/>
+                <field name="name"/>
+
 
                 <filter name="with_garden" string="With Garden" domain="[('garden','=',True)]"/>
                 <filter name="without_garden" string="Without Garden" domain="[('garden','=',False)]"/>
@@ -117,8 +122,32 @@
         <field name="view_mode">list,form</field>
     </record>
 
+    <record id="property_closed_server_action" model="ir.actions.server">
+        <field name="name">Property closed action server</field>
+        <field name="model_id" ref="model_property"/>
+        <field name="binding_model_id" ref="model_property"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = records.action_closed()
+        </field>
+    </record>
+
+
+    <record id="check_property_cron" model="ir.cron">
+        <field name="name">Property: Check expected selling date</field>
+        <field name="model_id" ref="model_property"/> <!-- replace with your module and model -->
+        <field name="state">code</field>
+        <field name="code">model.check_expected_selling_date()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active" eval="True"/> <!-- enable the cron -->
+    </record>
+
+
+
     <menuitem id="property_ment_item"
               name="properties"
               parent="properties_menu"
               action="property_action"/>
+
 </odoo>

@@ -1,0 +1,100 @@
+<odoo>
+
+
+    <record id="todo_view_tree" model="ir.ui.view">
+        <field name="name">todo list</field>
+        <field name="model">todo.task</field>
+        <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                    <field name="user_id"/>
+                    <field name="username"/>
+                    <field name="status"/>
+                    <field name="description"/>
+                    <field name="due_date"/>
+                </list>
+
+        </field>
+    </record>
+
+    <record id="todo_view_form" model="ir.ui.view">
+    <field name="name">todo form</field>
+    <field name="model">todo.task</field>
+
+    <field name="arch" type="xml">
+        <form>
+            <sheet>
+                <group>
+                    <group>
+                            <div>
+                                    <label for="name"/>
+                                    <h1>
+                                        <field name="name"/>
+                                    </h1>
+                           </div>
+
+
+                            <field name="due_date"/>
+                            <field name="status"/>
+                            <field name="username"/>
+                    </group>
+                    <group>
+                            <field name="description"/>
+                            <field name="user_id"/>
+                    </group>
+
+                </group>
+            </sheet>
+        </form>
+    </field>
+</record>
+
+
+
+<!--    <record id="todo_view_search" model="ir.ui.view">-->
+<!--        <field name="name">todo.search</field>-->
+<!--        <field name="model">todo.task</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <search>-->
+<!--                <field name="name"/>-->
+<!--                <field name="username"/>-->
+
+<!--                <filter name="new" string="New" domain="[('status','=','new')]"/>-->
+<!--                <filter name="in_progress" string="In Progress" domain="[('status','=','in_progress')]"/>-->
+<!--                <filter name="completed" string="Completed" domain="[('status','=','done')]"/>-->
+
+<!--                <group expand="0" string="Group by">-->
+<!--                    <filter string="Assigned To" context="{'group_by':'user_id'}"/>-->
+<!--                    <filter string="Status" context="{'group_by':'status'}"/>-->
+<!--                    <filter string="Due Date" context="{'group_by':'due_date'}"/>-->
+<!--                </group>-->
+<!--            </search>-->
+<!--        </field>-->
+<!--    </record>-->
+
+
+
+    <record id="todo_task_action" model="ir.actions.act_window">
+        <field name="name">Tasks</field>
+        <field name="res_model">todo.task</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+
+
+    <menuitem id="tasks_menu"
+              name="Tasks"
+              parent="tasks_menu_root"
+              action="todo_task_action"/>
+
+
+</odoo>
+
+
+
+
+
+
+
+
+
