@@ -1,17 +1,20 @@
-from odoo import models, fields
+# models/person_base.py
+from odoo import models, fields, api
 
-class PersonBase (models.AbstractModel):
+
+class PersonBase(models.AbstractModel):
     _name = 'person.base'
-    _log_access = False
+    _description = 'Person Base Model'
 
-    name = fields.Char()
-    dob = fields.Date()
-    email = fields.Char()
-    active = fields.Boolean()
+    name = fields.Char(string='Name', required=True)
+    dob = fields.Date(string='Date of Birth')
+    email = fields.Char(string='Email')
+    phone_number = fields.Char(string='Phone Number')
+    active = fields.Boolean(string='Active', default=True)
+    image = fields.Binary(string='Photo', attachment=True)
 
-
-
-
-
-
-
+    @api.constrains('email')
+    def _check_email(self):
+        for record in self:
+            if record.email and '@' not in record.email:
+                raise ValidationError("Please enter a valid email address")

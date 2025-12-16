@@ -1,7 +1,7 @@
 <odoo>
-
-    <record id="student_view_tree" model="ir.ui.view">
-        <field name="name">student tree</field>
+    <!-- list View -->
+    <record id="student_view_list" model="ir.ui.view">
+        <field name="name">student.list</field>
         <field name="model">student</field>
         <field name="arch" type="xml">
             <list>
@@ -12,75 +12,41 @@
         </field>
     </record>
 
-
-
-
-<record id="student_view_form" model="ir.ui.view">
-    <field name="name">student form</field>
-    <field name="model">student</field>
-    <field name="arch" type="xml">
-        <form>
-            <sheet>
-                <div class="oe_title">
-                    <label for="name"/>
-                    <h1>
-                        <field name="name"/>
-
-                    </h1>
-                </div>
-
-                <group>
-                    <group string="Right Column">
-                        <field name="name"/>
-                        <field name="age"/>
-                        <field name="phone_number" required="1"/>
-
-                    </group>
-                    <group string="Left Column">
-                        <field name="grade"/>
-                        <field name="course_ids" widget="many2many_tags"/>
-                        <field name="hobby"/>
-                    </group>
-                </group>
-            </sheet>
-        </form>
-    </field>
-</record>
-
-
-
-    <record id="property_view_search" model="ir.ui.view">
-        <field name="name">student search</field>
+    <!-- Form View -->
+    <record id="student_view_form" model="ir.ui.view">
+        <field name="name">student.form</field>
         <field name="model">student</field>
         <field name="arch" type="xml">
-                <search>
-                    <field name="name"/>
-                    <field name="grade"/>
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
 
-<!--                    <filter name="with_garden" string="With Garden" domain="[('garden','=',True)]"/>-->
-<!--                    <filter name="without_garden" string="Without Garden" domain="[('garden','=',False)]"/>-->
-<!--                    <filter name="with_garage" string="With Garage" domain="[('garage','=',True)]"/>-->
-<!--                    <filter name="group_by_garden" string="Garden" context="{'group_by':'garden'}"/>-->
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="age"/>
+                            <field name="phone_number"/>
+                        </group>
+                        <group>
+                            <field name="grade"/>
+                            <field name="hobby"/>
+                        </group>
+                    </group>
 
-                </search>
-
-
-
+                    <field name="course_ids" widget="many2many_tags"/>
+                </sheet>
+            </form>
         </field>
     </record>
 
-
+    <!-- Action -->
     <record id="student_action" model="ir.actions.act_window">
-        <field name="name">student</field>
+        <field name="name">Students</field>
         <field name="res_model">student</field>
         <field name="view_mode">list,form</field>
     </record>
-
-
-
-    <menuitem id="student_view_item"
-                name="students"
-                parent="configurations_menu"
-                action="student_action"/>
-
 </odoo>
