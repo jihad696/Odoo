@@ -1,3 +1,4 @@
+from . import person_base
 from . import student
 from . import course
 from . import teacher
