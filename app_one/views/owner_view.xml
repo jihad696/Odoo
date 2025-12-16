@@ -52,7 +52,8 @@
     <menuitem id = "owner_ment_item"
               name = "owner"
               parent = "configurations_menu"
-              action = "owner_action"/>
+              action = "owner_action"
+    />
 
 </odoo>
 

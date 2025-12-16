@@ -1,0 +1,2 @@
+access_property_manager,property.user,model_property,app_one.property_manager_group,1,1,1,1
+this is for specific group in ir.model.access.csv

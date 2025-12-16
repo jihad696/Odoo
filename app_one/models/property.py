@@ -1,3 +1,6 @@
+from email.policy import default
+from tokenize import group
+
 from odoo import models,fields,api
 from odoo.api import readonly
 from odoo.exceptions import ValidationError
@@ -8,14 +11,15 @@ class Property(models.Model):
     _description = 'Property Record'
     _inherit = ['mail.thread','mail.activity.mixin']
 
+    ref = fields.Char(default='New',readonly=True)
     name = fields.Char(default="New", size=14)
     description = fields.Text(tracking=True)
-    postcode = fields.Char(required=True)
+    postcode = fields.Char(required=False)
     date_availability = fields.Date(tracking=True)
     expected_selling_date = fields.Date(tracking=True)
     is_late = fields.Boolean()
     expected_price = fields.Float(digits=(0,2))
-    selling_price = fields.Float()
+    selling_price = fields.Float(groups="app_one.property_manager_group")
     diff = fields.Float(compute='_compute_diff',store=True)
     bed_rooms = fields.Integer()
     facades = fields.Integer()
@@ -117,6 +121,27 @@ class Property(models.Model):
             if rec.expected_selling_date and rec.expected_selling_date < fields.date.today():
                 rec.is_late = True
 
+
+    # def action(self):
+    #     print(self.env['owner'].create({
+    #         'name' : 'name one',
+    #         'phone_number' : '012544444444',
+    #     }))
+
+
+    def action(self):
+        print(self.env['property'].search([
+            '|',
+            ('name', '!=', 'Property1'),
+            ('postcode', '=', '12345')
+        ]))
+
+    @api.model
+    def create(self, vals):
+        res = super(Property,self).create(vals)
+        if res.ref == 'New':
+          res.ref =  self.env['ir.sequence'].next_by_code('property_seq')
+        return res
 
 
 

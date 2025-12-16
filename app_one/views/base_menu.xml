@@ -12,6 +12,8 @@
 
     <menuitem id = "configurations_menu"
               name="Configurations"
-              parent = "real_estate_root_menu" />
+              parent = "real_estate_root_menu"
+              groups="app_one.property_manager_group"/>
+
 
 </odoo>
