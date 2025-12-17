@@ -8,6 +8,8 @@
     # 'website': 'https://www.example.com',
     'depends': ['base'],
     'data': [
+        'security/ir.model.access.csv',
+        'security/security.xml',
         'views/base_menu.xml',
         'views/student_view.xml',
         'views/teacher_view.xml',

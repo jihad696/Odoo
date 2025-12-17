@@ -3,11 +3,10 @@ from odoo.exceptions import ValidationError
 
 class Student(models.Model):
     _name = 'student'
+    _inherit = 'person.base'
 
-    name = fields.Char()
     age = fields.Integer()
     hobby = fields.Char()
-    phone_number = fields.Char()
     grade = fields.Selection([
         ('grade_one','1'),
         ('grade_two','2'),
@@ -15,11 +14,16 @@ class Student(models.Model):
     ])
 
     course_ids = fields.Many2many('course')
-    course_code = fields.Char()
+    course_code = fields.Char(compute='_compute_course_code', store=True)
+    user_id = fields.Many2one('res.users', string='User')
 
-    _sql_constraints = [
-        ('unique_phone', 'UNIQUE(phone_number)', 'Phone number already exists!')
-    ]
+    @api.depends('course_ids')
+    def _compute_course_code(self):
+        for student in self:
+            if student.course_ids:
+                student.course_code = ', '.join(student.course_ids.mapped('name'))
+            else:
+                student.course_code = ''
 
     @api.constrains('age')
     def _check_age(self):

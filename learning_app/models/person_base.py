@@ -12,6 +12,12 @@ class PersonBase(models.AbstractModel):
     phone_number = fields.Char(string='Phone Number')
     active = fields.Boolean(string='Active', default=True)
     image = fields.Binary(string='Photo', attachment=True)
+    gender = fields.Selection([('male', 'Male'), ('female', 'Female'), ('other', 'Other')], string='Gender')
+    address = fields.Char(string='Address')
+
+    _sql_constraints = [
+        ('unique_phone', 'UNIQUE(phone_number)', 'Phone number already exists!')
+    ]
 
     @api.constrains('email')
     def _check_email(self):
