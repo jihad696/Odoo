@@ -49,9 +49,10 @@
         <field name="view_mode">list,form</field>
 
     </record>
+
     <menuitem id = "owner_ment_item"
               name = "owner"
-              parent = "configurations_menu"
+              parent = "properties_menu"
               action = "owner_action"
     />
 

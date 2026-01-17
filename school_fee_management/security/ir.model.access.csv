@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_fee_type_admin,access.fee.type.admin,model_school_fee_type,group_school_admin,1,1,1,1
+access_fee_type_accountant,access.fee.type.accountant,model_school_fee_type,group_school_accountant,1,0,0,0
+access_fee_type_parent,access.fee.type.parent,model_school_fee_type,group_school_parent,1,0,0,0
+access_fee_structure_admin,access.fee.structure.admin,model_school_fee_structure,group_school_admin,1,1,1,1
+access_fee_structure_accountant,access.fee.structure.accountant,model_school_fee_structure,group_school_accountant,1,0,0,0
+access_fee_structure_parent,access.fee.structure.parent,model_school_fee_structure,group_school_parent,1,0,0,0
+access_student_invoice_admin,access.student.invoice.admin,model_school_student_invoice,group_school_admin,1,1,1,1
+access_student_invoice_accountant,access.student.invoice.accountant,model_school_student_invoice,group_school_accountant,1,1,1,1
+access_student_invoice_parent,access.student.invoice.parent,model_school_student_invoice,group_school_parent,1,0,0,0
+access_payment_transaction_admin,access.payment.transaction.admin,model_school_payment_transaction,group_school_admin,1,1,1,1
+access_payment_transaction_accountant,access.payment.transaction.accountant,model_school_payment_transaction,group_school_accountant,1,1,1,1
+access_payment_transaction_parent,access.payment.transaction.parent,model_school_payment_transaction,group_school_parent,1,0,0,0

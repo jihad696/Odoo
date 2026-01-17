@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Main Menu -->
+        <menuitem id="menu_school_fee_root"
+                  name="School Fees"
+                  sequence="10"
+                  web_icon="school_fee_management,static/description/icon.png"
+                  groups="group_school_parent,group_school_accountant,group_school_admin"/>
+
+        <!-- Parent Portal Menu -->
+        <menuitem id="menu_parent_portal"
+                  name="My Portal"
+                  parent="menu_school_fee_root"
+                  sequence="10"
+                  groups="group_school_parent"/>
+
+        <menuitem id="menu_parent_invoices"
+                  name="My Children's Invoices"
+                  parent="menu_parent_portal"
+                  action="action_parent_portal_invoices"
+                  sequence="10"
+                  groups="group_school_parent"/>
+
+        <menuitem id="menu_parent_payments"
+                  name="Payment History"
+                  parent="menu_parent_portal"
+                  action="action_parent_portal_payments"
+                  sequence="20"
+                  groups="group_school_parent"/>
+
+        <!-- Operations Menu (Accountant & Admin) -->
+        <menuitem id="menu_operations"
+                  name="Operations"
+                  parent="menu_school_fee_root"
+                  sequence="20"
+                  groups="group_school_accountant"/>
+
+        <menuitem id="menu_student_invoices"
+                  name="Student Invoices"
+                  parent="menu_operations"
+                  action="action_student_invoice"
+                  sequence="10"
+                  groups="group_school_accountant"/>
+
+        <menuitem id="menu_payment_transactions"
+                  name="Payment Transactions"
+                  parent="menu_operations"
+                  action="action_payment_transaction"
+                  sequence="20"
+                  groups="group_school_accountant"/>
+
+        <!-- Configuration Menu (Admin only) -->
+        <menuitem id="menu_configuration"
+                  name="Configuration"
+                  parent="menu_school_fee_root"
+                  sequence="30"
+                  groups="group_school_admin"/>
+
+        <menuitem id="menu_fee_structures"
+                  name="Fee Structures"
+                  parent="menu_configuration"
+                  action="action_fee_structure"
+                  sequence="10"
+                  groups="group_school_admin"/>
+
+        <menuitem id="menu_fee_types"
+                  name="Fee Types"
+                  parent="menu_configuration"
+                  action="action_fee_type"
+                  sequence="20"
+                  groups="group_school_admin"/>
+
+    </data>
+</odoo>

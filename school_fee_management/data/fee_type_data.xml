@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Pre-defined Fee Types -->
+        <record id="fee_type_tuition" model="school.fee.type">
+            <field name="name">Tuition</field>
+            <field name="code">TUITION</field>
+            <field name="sequence">10</field>
+            <field name="description">Regular tuition fees for academic instruction</field>
+        </record>
+
+        <record id="fee_type_books" model="school.fee.type">
+            <field name="name">Books &amp; Materials</field>
+            <field name="code">BOOKS</field>
+            <field name="sequence">20</field>
+            <field name="description">Textbooks and learning materials</field>
+        </record>
+
+        <record id="fee_type_uniform" model="school.fee.type">
+            <field name="name">School Uniform</field>
+            <field name="code">UNIFORM</field>
+            <field name="sequence">30</field>
+            <field name="description">School uniform and dress code items</field>
+        </record>
+
+        <record id="fee_type_activities" model="school.fee.type">
+            <field name="name">Activities &amp; Events</field>
+            <field name="code">ACTIVITY</field>
+            <field name="sequence">40</field>
+            <field name="description">Extracurricular activities, sports, field trips</field>
+        </record>
+
+        <record id="fee_type_technology" model="school.fee.type">
+            <field name="name">Technology Fee</field>
+            <field name="code">TECH</field>
+            <field name="sequence">50</field>
+            <field name="description">Computer lab, software licenses, digital resources</field>
+        </record>
+
+        <record id="fee_type_lunch" model="school.fee.type">
+            <field name="name">Lunch Program</field>
+            <field name="code">LUNCH</field>
+            <field name="sequence">60</field>
+            <field name="description">School meal program</field>
+        </record>
+
+        <record id="fee_type_registration" model="school.fee.type">
+            <field name="name">Registration Fee</field>
+            <field name="code">REG</field>
+            <field name="sequence">70</field>
+            <field name="description">One-time registration or enrollment fee</field>
+        </record>
+
+    </data>
+</odoo>

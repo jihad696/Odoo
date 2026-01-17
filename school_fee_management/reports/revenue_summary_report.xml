@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!--
+            REVENUE SUMMARY REPORT
+
+            Shows total revenue collected and pending by fee type and grade level.
+            Useful for financial planning and budget forecasting.
+        -->
+
+        <record id="view_revenue_summary_pivot" model="ir.ui.view">
+            <field name="name">revenue.summary.report.pivot</field>
+            <field name="model">school.student.invoice</field>
+            <field name="arch" type="xml">
+                <pivot string="Revenue Summary">
+                    <field name="grade_level" type="row"/>
+                    <field name="semester" type="col"/>
+                    <field name="amount_total" type="measure"/>
+                    <field name="amount_residual" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="view_revenue_summary_graph" model="ir.ui.view">
+            <field name="name">revenue.summary.report.graph</field>
+            <field name="model">school.student.invoice</field>
+            <field name="arch" type="xml">
+                <graph string="Revenue by Grade Level" type="bar">
+                    <field name="grade_level"/>
+                    <field name="amount_total" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="action_revenue_summary_report" model="ir.actions.act_window">
+            <field name="name">Revenue Summary</field>
+            <field name="res_model">school.student.invoice</field>
+            <field name="view_mode">pivot,graph</field>
+            <field name="domain">[('state', '!=', 'cancelled')]</field>
+            <field name="context">{
+                'group_by': ['grade_level', 'semester'],
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_empty_folder">
+                    No revenue data available
+                </p>
+                <p>
+                    This report provides revenue analysis by grade level and semester.
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_revenue_summary_report"
+                  name="Revenue Summary"
+                  parent="menu_reports"
+                  action="action_revenue_summary_report"
+                  sequence="20"
+                  groups="group_school_admin"/>
+
+    </data>
+</odoo>

@@ -9,4 +9,4 @@ from . import sale_order
 from . import clientt
 from . import res_partner
 from . import buildng
-
+from . import property_history

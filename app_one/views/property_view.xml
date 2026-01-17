@@ -30,9 +30,11 @@
         <field name="arch" type="xml">
             <form multi_edit="1" edit="1" create="1" delete="0">
                 <sheet>
+                        <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                        <widget name="web_ribbon" title="Sold" bg_color="text-bg-success" invisible="state != 'sold'"/>
                     <header>
                         <button name="action_draft" type="object" class="btn-primary"
-                                string="Set To Draft" invisible="state == 'draft'"/>
+                                string="Set To Draft" invisible="state in ('draft','closed')"/>
                         <button name="action_pending" type="object" class="btn-secondary"
                                 string="Set To Pending" invisible="state != 'draft'"/>
                         <button name="action_sold" type="object" class="btn-danger"
@@ -55,34 +57,34 @@
                     <div class="oe_title"> <!-- oe-title is a bootstrap class -->
                         <label for="name"/>
                         <h4>
-                            <field name="name"/>
+                            <field name="name" readonly="state == 'closed'"/>
                         </h4>
                     </div>
 
                     <group>
                         <group string="Genearal Info.">
-                            <field name="date_availability"/>
-                            <field name="expected_price"/>
-                            <field name="selling_price"/>
+                            <field name="date_availability" readonly="state == 'closed'"/>
+                            <field name="expected_price" readonly="state == 'closed'"/>
+                            <field name="selling_price" readonly="state == 'closed'"/>
                             <field name="is_late" invisible="1"/>
-                            <field name="diff"/>
-                            <field name="garden"/>
-                            <field name="owner_id"/>
-                            <field name="owner_address"/>
-                            <field name="owner_phone"/>
+                            <field name="diff" readonly="state == 'closed'"/>
+                            <field name="garden" readonly="state == 'closed'"/>
+                            <field name="owner_id" readonly="state == 'closed'"/>
+                            <field name="owner_address" readonly="state == 'closed'"/>
+                            <field name="owner_phone" readonly="state == 'closed'"/>
                             <field name="tag_ids" widget="many2many_tags"/>
-                            <field name="bed_rooms"/>
-                            <field name="active"/>
+                            <field name="bed_rooms" readonly="state == 'closed'"/>
+                            <field name="active" readonly="state == 'closed'"/>
                         </group>
 
                         <group string="Additional Info.">
 
-                            <field name="facades"/>
-                            <field name="garden_oreintation"/>
-                            <field name="garden_area"/>
-                            <field name="garage"/>
-                            <field name="postcode" groups="app_one.property_manager_group"/>
-                            <field name="expected_price"/>
+                            <field name="facades" readonly="state == 'closed'"/>
+                            <field name="garden_oreintation" readonly="state == 'closed'"/>
+                            <field name="garden_area" readonly="state == 'closed'"/>
+                            <field name="garage" readonly="state == 'closed'"/>
+                            <field name="postcode" groups="app_one.property_manager_group" readonly="state == 'closed'"/>
+                            <field name="expected_price" readonly="state == 'closed'"/>
                         </group>
 
                         <group>
@@ -153,6 +155,17 @@
         <field name="state">code</field>
         <field name="code">
             action = records.action_closed()
+        </field>
+    </record>
+
+    <record id="property_change_state_server_action" model="ir.actions.server">
+        <field name="name">Change State</field>
+        <field name="model_id" ref="model_property"/>
+        <field name="binding_model_id" ref="model_property"/>
+        <field name="state">code</field>
+        <field name="code">
+            action=records.action_open_change_state_wizard()
+
         </field>
     </record>
 

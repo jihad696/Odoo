@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Fee Type Views -->
+        <record id="view_fee_type_list" model="ir.ui.view">
+            <field name="name">school.fee.type.list</field>
+            <field name="model">school.fee.type</field>
+            <field name="arch" type="xml">
+                <list string="Fee Types">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="active"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_fee_type_form" model="ir.ui.view">
+            <field name="name">school.fee.type.form</field>
+            <field name="model">school.fee.type</field>
+            <field name="arch" type="xml">
+                <form string="Fee Type">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                                <field name="active" widget="boolean_button" options="{'terminology': 'archive'}"/>
+                            </button>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="code"/>
+                            </group>
+                            <group>
+                                <field name="sequence"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="description" placeholder="Description of this fee type..."/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Fee Structure Views -->
+        <record id="view_fee_structure_list" model="ir.ui.view">
+            <field name="name">school.fee.structure.list</field>
+            <field name="model">school.fee.structure</field>
+            <field name="arch" type="xml">
+                <list string="Fee Structures" decoration-muted="not active">
+                    <field name="name"/>
+                    <field name="fee_type_id"/>
+                    <field name="grade_level"/>
+                    <field name="amount" widget="monetary"/>
+                    <field name="recurrence"/>
+                    <field name="discount_type"/>
+                    <field name="academic_year"/>
+                    <field name="currency_id" column_invisible="1"/>
+                    <field name="active" column_invisible="1"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_fee_structure_form" model="ir.ui.view">
+            <field name="name">school.fee.structure.form</field>
+            <field name="model">school.fee.structure</field>
+            <field name="arch" type="xml">
+                <form string="Fee Structure">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                                <field name="active" widget="boolean_button" options="{'terminology': 'archive'}"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1><field name="name" readonly="1"/></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="fee_type_id"/>
+                                <field name="grade_level"/>
+                                <field name="academic_year"/>
+                            </group>
+                            <group>
+                                <field name="amount" widget="monetary"/>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="recurrence"/>
+                            </group>
+                        </group>
+                        <group string="Discount Configuration">
+                            <group>
+                                <field name="discount_type"/>
+                                <field name="discount_value" invisible="discount_type == 'none'"/>
+                            </group>
+                            <group>
+<!--                                <label for="id" string="Final Amount"/>-->
+                                <div>
+                                    <button name="calculate_final_amount" type="object" string="Calculate" class="btn-primary"/>
+                                </div>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_fee_structure_search" model="ir.ui.view">
+            <field name="name">school.fee.structure.search</field>
+            <field name="model">school.fee.structure</field>
+            <field name="arch" type="xml">
+                <search string="Fee Structures">
+                    <field name="fee_type_id"/>
+                    <field name="grade_level"/>
+                    <field name="academic_year"/>
+                    <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                    <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                    <separator/>
+                    <filter string="One Time" name="one_time" domain="[('recurrence', '=', 'one_time')]"/>
+                    <filter string="Recurring" name="recurring" domain="[('recurrence', '!=', 'one_time')]"/>
+                    <separator/>
+                    <filter string="With Discount" name="with_discount" domain="[('discount_type', '!=', 'none')]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Fee Type" name="group_fee_type" context="{'group_by': 'fee_type_id'}"/>
+                        <filter string="Grade Level" name="group_grade" context="{'group_by': 'grade_level'}"/>
+                        <filter string="Recurrence" name="group_recurrence" context="{'group_by': 'recurrence'}"/>
+                        <filter string="Academic Year" name="group_year" context="{'group_by': 'academic_year'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Actions -->
+        <record id="action_fee_type" model="ir.actions.act_window">
+            <field name="name">Fee Types</field>
+            <field name="res_model">school.fee.type</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first fee type
+                </p>
+                <p>
+                    Fee types are the categories of fees you charge (tuition, books, uniform, etc.)
+                </p>
+            </field>
+        </record>
+
+        <record id="action_fee_structure" model="ir.actions.act_window">
+            <field name="name">Fee Structures</field>
+            <field name="res_model">school.fee.structure</field>
+            <field name="view_mode">list,form</field>
+            <field name="context">{'search_default_active': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Define your first fee structure
+                </p>
+                <p>
+                    Fee structures link fee types to grade levels with specific amounts and recurrence rules.
+                </p>
+            </field>
+        </record>
+        
+    </data>
+</odoo>

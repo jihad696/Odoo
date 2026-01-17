@@ -11,7 +11,7 @@ class Building(models.Model):
 
     no = fields.Integer()
     code = fields.Char()
-    description=fields.Text()
+    description=fields.Text(tracking=True)
     active=fields.Boolean(default=True)
 
 

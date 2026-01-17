@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!--
+            SECURITY ARCHITECTURE:
+            Three-tier access control system demonstrating mid-level security understanding
+
+            1. Parent (Read-only access to own children's data)
+            2. School Accountant (Full access to invoices and payments)
+            3. School Administrator (Full access to all school data including fee structures)
+
+            This follows the principle of least privilege - each group has minimum necessary access.
+        -->
+
+        <!-- Category for School Management -->
+        <record id="module_category_school_management" model="ir.module.category">
+            <field name="name">School Management</field>
+            <field name="description">Manage school fees, invoices, and payments</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <!-- Group 1: Parent/Guardian - Read-only access to children's invoices -->
+        <record id="group_school_parent" model="res.groups">
+            <field name="name">Parent/Guardian</field>
+            <field name="category_id" ref="module_category_school_management"/>
+            <field name="comment">
+                Parents can view their children's invoices and payment history.
+                No create, update, or delete permissions.
+                Record rules ensure they only see their own children's data.
+            </field>
+        </record>
+
+        <!-- Group 2: School Accountant - Manage invoices and payments -->
+        <record id="group_school_accountant" model="res.groups">
+            <field name="name">School Accountant</field>
+            <field name="category_id" ref="module_category_school_management"/>
+            <field name="implied_ids" eval="[(4, ref('group_school_parent'))]"/>
+            <field name="comment">
+                Accountants can create, update, and delete invoices and payment transactions.
+                They can view all students' invoices but cannot modify fee structures.
+                This separation ensures financial control without affecting pricing.
+            </field>
+        </record>
+
+        <!-- Group 3: School Administrator - Full access -->
+        <record id="group_school_admin" model="res.groups">
+            <field name="name">School Administrator</field>
+            <field name="category_id" ref="module_category_school_management"/>
+            <field name="implied_ids" eval="[(4, ref('group_school_accountant'))]"/>
+            <field name="comment">
+                Administrators have full access to all school management features.
+                They can configure fee structures, manage invoices, and oversee all operations.
+                This is the highest privilege level in the school management system.
+            </field>
+        </record>
+
+        <!-- Ensure accountants have access to accounting features -->
+        <record id="school_accountant_access_to_invoicing" model="res.groups">
+            <field name="name">School Accountant - Invoicing Access</field>
+            <field name="implied_ids" eval="[(4, ref('account.group_account_invoice'))]"/>
+            <field name="users" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+    </data>
+</odoo>

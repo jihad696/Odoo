@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Student Invoice list View -->
+        <record id="view_student_invoice_list" model="ir.ui.view">
+            <field name="name">school.student.invoice.list</field>
+            <field name="model">school.student.invoice</field>
+            <field name="arch" type="xml">
+                <list string="Student Invoices"
+                      decoration-success="state == 'paid'"
+                      decoration-danger="state == 'overdue'"
+                      decoration-warning="state == 'partial'"
+                      decoration-muted="state == 'cancelled'">
+                    <field name="display_name"/>
+                    <field name="student_id"/>
+                    <field name="parent_id"/>
+                    <field name="invoice_date"/>
+                    <field name="due_date"/>
+                    <field name="amount_total" widget="monetary"/>
+                    <field name="amount_residual" widget="monetary"/>
+                    <field name="payment_percentage" widget="progressbar"/>
+                    <field name="state" widget="badge"
+                           decoration-success="state == 'paid'"
+                           decoration-danger="state == 'overdue'"
+                           decoration-warning="state == 'partial'"
+                           decoration-info="state == 'sent'"/>
+                    <field name="semester"/>
+                    <field name="currency_id" column_invisible="1"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Student Invoice Form View -->
+        <record id="view_student_invoice_form" model="ir.ui.view">
+            <field name="name">school.student.invoice.form</field>
+            <field name="model">school.student.invoice</field>
+            <field name="arch" type="xml">
+                <form string="Student Invoice">
+                    <header>
+                        <button name="action_send_invoice" string="Send Invoice" type="object"
+                                class="oe_highlight" invisible="state != 'draft'"/>
+                        <button name="action_mark_paid" string="Mark as Paid" type="object"
+                                invisible="state in ['paid', 'cancelled']"/>
+                        <button name="action_view_invoice" string="View Accounting Invoice" type="object"
+                                class="btn-secondary"/>
+                        <button name="action_cancel" string="Cancel" type="object"
+                                invisible="state in ['paid', 'cancelled']"
+                                confirm="Are you sure you want to cancel this invoice?"/>
+                        <button name="action_reset_to_draft" string="Reset to Draft" type="object"
+                                invisible="state not in ['sent', 'partial', 'overdue', 'cancelled']"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,sent,partial,paid"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_invoice" type="object" class="oe_stat_button" icon="fa-file-text-o">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_text">Accounting</span>
+                                    <span class="o_stat_text">Invoice</span>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1><field name="display_name" readonly="1"/></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="student_id"
+                                       options="{'no_create': True, 'no_open': True}"/>
+                                <field name="parent_id" readonly="1"/>
+                                <field name="grade_level"/>
+                            </group>
+                            <group>
+                                <field name="invoice_id"
+                                       options="{'no_create': True}"/>
+                                <field name="invoice_date"/>
+                                <field name="due_date"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="semester"/>
+                                <field name="academic_year"/>
+                            </group>
+                            <group>
+                                <field name="amount_total" widget="monetary"/>
+                                <field name="amount_residual" widget="monetary"/>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="payment_percentage" widget="percentage"/>
+                            </group>
+                        </group>
+                        <group string="Overdue Information" invisible="not is_overdue">
+                            <field name="is_overdue" invisible="1"/>
+                            <field name="days_overdue"/>
+                        </group>
+                        <notebook>
+                            <page string="Invoice Details">
+                                <field name="invoice_state" invisible="1"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Student Invoice Kanban View -->
+        <record id="view_student_invoice_kanban" model="ir.ui.view">
+            <field name="name">school.student.invoice.kanban</field>
+            <field name="model">school.student.invoice</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile" default_group_by="state">
+                    <field name="student_id"/>
+                    <field name="invoice_date"/>
+                    <field name="amount_total"/>
+                    <field name="amount_residual"/>
+                    <field name="state"/>
+                    <field name="is_overdue"/>
+                    <field name="currency_id"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_global_click">
+                                <div class="oe_kanban_content">
+                                    <div class="o_kanban_record_top">
+                                        <div class="o_kanban_record_headings">
+                                            <strong class="o_kanban_record_title">
+                                                <field name="student_id"/>
+                                            </strong>
+                                            <div class="o_kanban_record_subtitle">
+                                                Invoice Date: <field name="invoice_date"/>
+                                            </div>
+                                        </div>
+                                        <span class="float-end">
+                                            <field name="state" widget="label"
+                                                   options="{'classes': {'draft': 'secondary', 'sent': 'info', 'partial': 'warning', 'paid': 'success', 'overdue': 'danger', 'cancelled': 'default'}}"/>
+                                        </span>
+                                    </div>
+                                    <div class="o_kanban_record_body">
+                                        <field name="display_name"/>
+                                        <div t-if="record.is_overdue.raw_value" class="text-danger">
+                                            <i class="fa fa-exclamation-triangle"/> Overdue
+                                        </div>
+                                    </div>
+                                    <div class="o_kanban_record_bottom">
+                                        <div class="oe_kanban_bottom_left">
+                                            <strong>
+                                                <field name="amount_total" widget="monetary"/>
+                                            </strong>
+                                        </div>
+                                        <div class="oe_kanban_bottom_right">
+                                            Due: <field name="amount_residual" widget="monetary"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- Student Invoice Search View -->
+        <record id="view_student_invoice_search" model="ir.ui.view">
+            <field name="name">school.student.invoice.search</field>
+            <field name="model">school.student.invoice</field>
+            <field name="arch" type="xml">
+                <search string="Student Invoices">
+                    <field name="student_id"/>
+                    <field name="parent_id"/>
+                    <field name="invoice_id"/>
+                    <field name="display_name"/>
+                    <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                    <filter string="Sent" name="sent" domain="[('state', '=', 'sent')]"/>
+                    <filter string="Partial" name="partial" domain="[('state', '=', 'partial')]"/>
+                    <filter string="Paid" name="paid" domain="[('state', '=', 'paid')]"/>
+                    <filter string="Overdue" name="overdue" domain="[('state', '=', 'overdue')]"/>
+                    <separator/>
+                    <filter string="Unpaid" name="unpaid" domain="[('amount_residual', '>', 0), ('state', '!=', 'cancelled')]"/>
+                    <filter string="This Month" name="this_month"
+                            domain="[('invoice_date', '>=', (context_today() - relativedelta(day=1)).strftime('%Y-%m-%d')), ('invoice_date', '&lt;', (context_today() + relativedelta(months=1, day=1)).strftime('%Y-%m-%d'))]"/>
+                    <separator/>
+                    <filter string="Fall Semester" name="fall" domain="[('semester', '=', 'fall')]"/>
+                    <filter string="Spring Semester" name="spring" domain="[('semester', '=', 'spring')]"/>
+                    <filter string="Summer Semester" name="summer" domain="[('semester', '=', 'summer')]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Student" name="group_student" context="{'group_by': 'student_id'}"/>
+                        <filter string="Parent" name="group_parent" context="{'group_by': 'parent_id'}"/>
+                        <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                        <filter string="Semester" name="group_semester" context="{'group_by': 'semester'}"/>
+                        <filter string="Invoice Date" name="group_invoice_date" context="{'group_by': 'invoice_date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_student_invoice" model="ir.actions.act_window">
+            <field name="name">Student Invoices</field>
+            <field name="res_model">school.student.invoice</field>
+            <field name="view_mode">list,kanban,form</field>
+            <field name="context">{'search_default_unpaid': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No student invoices yet
+                </p>
+                <p>
+                    Invoices are automatically generated by the scheduled action at the start of each semester.
+                    You can also create invoices manually if needed.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

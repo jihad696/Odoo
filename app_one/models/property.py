@@ -88,15 +88,16 @@ class Property(models.Model):
 
     def action_draft(self):
         for rec in self:
-            print("inside draft action")
+            rec.create_history_record(rec.state,'draft')
             rec.state = 'draft'
+
             # rec.write ({
             #
             # })
 
     def action_pending(self):
         for rec in self:
-            print("inside pending action")
+            rec.create_history_record(rec.state,'pending')
             rec.state = 'pending'
             # rec.write ({
             #
@@ -105,13 +106,13 @@ class Property(models.Model):
 
     def action_sold(self):
         for rec in self:
-            print("inside sold action")
+            rec.create_history_record(rec.state,'sold')
             rec.state = 'sold'
 
 
     def action_closed(self):
         for rec in self:
-            print("inside closed action")
+            rec.create_history_record(rec.state,'closed')
             rec.state = 'closed'
 
 
@@ -142,6 +143,21 @@ class Property(models.Model):
         if res.ref == 'New':
           res.ref =  self.env['ir.sequence'].next_by_code('property_seq')
         return res
+
+    def create_history_record(self,old_state,new_state,reason):
+        for rec in self:
+            rec.env['property.history'].create({
+                'user_id':rec.env.uid,
+                'property_id':rec.id,
+                'old_state':old_state,
+                'new_state':new_state,
+                'reason':reason or "",
+            })
+
+    def action_open_change_state_wizard(self):
+        action=self.env['ir.actions.actions']._for_xml_id('app_one.change_state_wizard_action')
+        action['context'] = {'default_property_id':self.id}
+        return action
 
 
 
