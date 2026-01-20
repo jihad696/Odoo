@@ -11,7 +11,7 @@ A comprehensive Odoo module demonstrating professional development skills includ
 - **Parent Portal**: Secure, user-friendly interface for parents to view invoices
 - **Integration**: Seamless integration with Odoo's Invoicing module (account.move)
 
-### Mid-Level Features (What Makes This Special)
+###Features (What Makes This Special)
 
 #### 1. Performance Optimization
 ```python
