@@ -1,6 +1,6 @@
 # School Fee Management Module for Odoo 18.0
 
-A comprehensive mid-level Odoo module demonstrating professional development skills including performance optimization, security implementation, and business process automation.
+A comprehensive Odoo module demonstrating professional development skills including performance optimization, security implementation, and business process automation.
 
 ## 🎯 Module Features
 
