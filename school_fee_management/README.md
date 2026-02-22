@@ -377,8 +377,4 @@ This is a demonstration module. For production use:
 
 LGPL-3
 
----
 
-**Author**: Your Name
-**Version**: 18.0.1.0.0
-**Last Updated**: 2024
